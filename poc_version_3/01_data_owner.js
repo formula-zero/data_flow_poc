@@ -46,7 +46,7 @@ const generateKeyFile = async () => {
   const dataOwners = require(dataOwnersJsonFilePath)
   key.reEncryptionKeys = {}
   
-  let data = JSON.stringify(key)
+  let data = JSON.stringify(key, null, 2)
   fs.writeFileSync(`${dataOwnerKeyDirPath}/${answer}.json`, data)
 
   data = JSON.stringify({})
@@ -56,10 +56,11 @@ const generateKeyFile = async () => {
     keyFileName: answer
   }
   
-  data = JSON.stringify(dataOwners)
+  data = JSON.stringify(dataOwners, null, 2)
   fs.writeFileSync(dataOwnersJsonFilePath, data)
   
   console.log('Complete to generate key')
+  console.log('The data owner pk is', key.pk)
   rl.close()
 }
 
@@ -88,16 +89,19 @@ const encryptFile = async () => {
     answer = await ask("Input a file name for encryption: ")
 	}
 
-  const data = await readFile(`${originFileDirPath}/${answer}.txt`, 'utf8')
+  const fileName = `${answer}`.split('.')[0]
+  const fileExtension = `${answer}`.split('.')[1]
+  const data = await readFile(`${originFileDirPath}/${answer}`, 'utf8')
 
-  const SHARED_SECRET = '12345678901234567890123456789012'
+  const SHARED_SECRET = '12345678901234567890123456789012' // TODO: have to random
 
   let encryptedData = Aes.encrypt(data, SHARED_SECRET)
   encryptedData.encryptedDecryptionKey = PRE.enc(SHARED_SECRET, selectedDataOwner.pk, initiatedParams, {returnHex: true})
   encryptedData.dataOwner = selectedDataOwner.pk
+  encryptedData.fileExtension = fileExtension
 
-  encryptedData = JSON.stringify(encryptedData)
-  fs.writeFileSync(`${encryptedFileDirPath}/${answer}.json`, encryptedData)
+  encryptedData = JSON.stringify(encryptedData, null, 2)
+  fs.writeFileSync(`${encryptedFileDirPath}/${fileName}.json`, encryptedData)
 
   console.log('Complete to encrypt the file')
   rl.close()
@@ -105,7 +109,6 @@ const encryptFile = async () => {
 
 const generateReEncryptionKey = async () => {
   const selectedDataOwner = await selectDataOwner()
-  console.log(selectedDataOwner)
 
   const workerSelectors = require(workerSelectorsJsonFilePath)
   const workerSelectorPks = Object.keys(workerSelectors)
@@ -137,7 +140,7 @@ const generateReEncryptionKey = async () => {
     reEncryptionKeys[selectedWorkerSelectorPk][workerPks[i]] = encryptedReEncryptionKey    
   }
 
-  const data = JSON.stringify(reEncryptionKeys)
+  const data = JSON.stringify(reEncryptionKeys, null, 2)
   fs.writeFileSync(`${reencryptionKeyDirPath}/${selectedDataOwner.keyFileName}.json`, data)
 
   console.log('Complete to generate reencryption key')

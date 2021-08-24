@@ -1,7 +1,11 @@
 {
-  "ciphertext":"5TJdoXNr6Ub8Kik6aqop6hJWhfflnz51IyL4wliZEovQ0ut975i0SQ9/HgYapmsuJa6JkSftbKL6NkZEMcokNoSsz2rKXYWNUl8bzha6YarLEEowwISX",
-  "iv":"VlIbf5WubK6QVsD6ozQ6Gw==",
-  "tag":"8wgvhxmMIa+/4EEAB3bZPg==",
-  "encryptedDecryptionKey":["1592d85d6bf5acce7871ee3192f93338fa486615c1d64d4f0b6f2a62aa66b669ba239567e6bdbf69390ab42544bff90a","eeb2d651285a6c77986e37674caa61536ae8d130d330e401d10eb88ae5b96163"],
-  "dataOwner":"c42d54f9414db5dcbece12b3c555fc37a5b779c9c2d94908d12d6ef84af8aa7adb0317caef3874db6f2ca8024c65a509"
+  "ciphertext": "BE74e0EBu8Rt8EXrFB7zKutWAZnMiMQ8m2FzAK5tV6qz/C62wyuM34QleTIZQirWipqm7rRYj2isfiNI3MG8BJmoUHEKQgdyX48A4UG3rR95tmRyVQm7",
+  "iv": "ycgjR5icvtkP9/IjBkV+Uw==",
+  "tag": "SbmQt5YtMnXO8Kz2HmBNDQ==",
+  "encryptedDecryptionKey": [
+    "894edefc10256dae56aa5745f597caa1250455f7326179d38d9d53ffa7490e7772c9c014fa070a03aba164d27e032b89",
+    "dd26f9179b5c410cafc40dc7a470da4cfcb1e0444833b0ca464f52ce13021258"
+  ],
+  "dataOwner": "c42d54f9414db5dcbece12b3c555fc37a5b779c9c2d94908d12d6ef84af8aa7adb0317caef3874db6f2ca8024c65a509",
+  "fileExtension": "txt"
 }

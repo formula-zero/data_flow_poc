@@ -22,7 +22,6 @@ const ask = function (questionText) {
   })
 }
 
-
 const selectMenu = (answer) => {
   if(answer == 1) {
     return generateKeyFile()
@@ -43,17 +42,18 @@ const generateKeyFile = async () => {
   const key = PRE.keyGenInG2(initiatedParams, {returnHex: true})
   const workers = require(workersJsonFilePath)
   
-  let data = JSON.stringify(key)
+  let data = JSON.stringify(key, null, 2)
   fs.writeFileSync(`${workerKeyDirPath}/${answer}.json`, data)
 
   workers[key.pk] = {
     keyFileName: answer
   }
   
-  data = JSON.stringify(workers)
+  data = JSON.stringify(workers, null, 2)
   fs.writeFileSync(workersJsonFilePath, data)
   
   console.log('Complete to generate key')
+  console.log('The worker pk is', key.pk)
   rl.close()
 }
 
@@ -81,8 +81,9 @@ const decrypteFile = async () => {
     console.log('Please input a file name')
     answer = await ask("Input a file name for decryption: ")
 	}
-  const fileName = answer
-  const {ciphertext, iv, tag} = require((`${encryptedFileDirPath}/${fileName}.json`))
+  const fileName = answer.split(".")[0]
+  // const fileExtension = answer.split(".")[1]
+  const {ciphertext, iv, tag, fileExtension} = require((`${encryptedFileDirPath}/${fileName}.json`))
   const reEncryptedDecryptionKeys = require((`${reEncryptedDecryptionKeyDirPath}/${fileName}.json`))
 
   if(reEncryptedDecryptionKeys.hasOwnProperty(selectedWorker.pk)) {
@@ -92,7 +93,7 @@ const decrypteFile = async () => {
     //console.log(encryptedFileInfo)
     //console.log(reEncryptedDecryptionKeys)
     const originalData = Aes.decrypt(ciphertext, iv, tag, decryptionKey.toString());
-    fs.writeFileSync(`${recoveredFileDirPath}/${fileName}.txt`, originalData)
+    fs.writeFileSync(`${recoveredFileDirPath}/${fileName}.${fileExtension}`, originalData)
     console.log('Complete to decrypt the file')
   } else {
     console.log('The worker has no re-encrypted-decription key')

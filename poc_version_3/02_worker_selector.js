@@ -48,17 +48,18 @@ const generateKeyFile = async () => {
 
   const workerSelectors = require(workerSelectorsJsonFilePath)
 
-  let data = JSON.stringify(key)
+  let data = JSON.stringify(key, null, 2)
   fs.writeFileSync(`${workerSelectorKeyDirPath}/${answer}.json`, data)
 
   workerSelectors[key.pk] = {
     keyFileName: answer
   }
   
-  data = JSON.stringify(workerSelectors)
+  data = JSON.stringify(workerSelectors, null, 2)
   fs.writeFileSync(workerSelectorsJsonFilePath, data)
   
   console.log('Complete to generate key')
+  console.log('The worker selector pk is', key.pk)
   rl.close()
 }
 
@@ -90,7 +91,8 @@ const selectWorkerForEncryptedFile = async () => {
     answer = await ask("Input the encrypted file name: ")
 	}
 
-  const fileName = answer
+  const fileName = answer.split(".")[0]
+  const fileExtension = answer.split(".")[1]
   const reEncryptedDecryptionKeys = {}
   const encryptedFileInfo = require((`${encryptedFileDirPath}/${fileName}.json`))
   const encryptedReEncryptionKeys = require((`${reencryptionKeyDirPath}/${dataOwners[encryptedFileInfo.dataOwner].keyFileName}.json`))[selectedWorkerSelector.pk]
@@ -114,7 +116,7 @@ const selectWorkerForEncryptedFile = async () => {
     }
   }
   
-  const data = JSON.stringify(reEncryptedDecryptionKeys)
+  const data = JSON.stringify(reEncryptedDecryptionKeys, null, 2)
   fs.writeFileSync(`${reEncryptedDecryptionKeyDirPath}/${fileName}.json`, data)
 
   console.log('Complete to select workers')
