@@ -44,7 +44,7 @@ Access control on data by using Proxy Re-Encryption scheme
     # Data owner
     **> node 01_data_owner.js**
 
-    1. Generate worker key
+    1. Generate data owner's key
     2. Encrypt a file
     3. Generate re-encryption key
     >>1
